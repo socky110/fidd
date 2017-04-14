@@ -4,7 +4,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class client extends proxy{
+public class Client extends Proxy{
 	@Override
 	public void pre(FMLPreInitializationEvent event)
     {super.pre(event);

@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class proxy {
+public class Proxy {
 	@EventHandler
 	public void pre(FMLPreInitializationEvent event)
     {

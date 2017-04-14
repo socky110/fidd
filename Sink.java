@@ -1,5 +1,10 @@
 package fidd;
 
+import java.util.List;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -14,36 +19,48 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Sink extends EntityCreature{
-	public World w = Minecraft.getMinecraft().theWorld;
-	public EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+	
+	public boolean isEntityInvulnerable(DamageSource source){
+		return true;
+	}
 	public Sink(World worldIn) {
 		super(worldIn);
 		//if(p.getDistance(this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ) <= 10){// || this.getDistanceToEntity(p) > 2){
-		final int RANGE = 5;
-		if(p.getPosition().distanceSq(this.getPosition()) <= 36)
-		{
-			p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 2));
-		}
-		else if(p.getPosition().distanceSq(this.getPosition()) <= RANGE * RANGE)
-		{
-			p.addPotionEffect(new PotionEffect(MobEffects.SPEED, 2));
-		}
-		//if(Math.abs(p.posX - this.posX) > 0){
-			//new BlockPos().getX()
-		//}else if(this.getDistanceToEntity(p2) <= 10){
-		//	p2.addPotionEffect(new PotionEffect(MobEffects.REGENERATION));
-		//	p2.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS));
-		else{
-			p.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 2));
-		}
+		
 		//link to tileentity
 		//Entity entity = this.getLeashedToEntity();//tileentity
         //this.setHomePosAndDistance(new BlockPos((int)entity.posX, (int)entity.posY, (int)entity.posZ), 5);
         
+	}
+
+	public static final int RANGE = 5;
+	public void onLivingUpdate(){
+		Predicate<Entity> predicate = Predicates.<Entity>and(EntitySelectors.NOT_SPECTATING);
+		List<EntityPlayer> list = this.worldObj.getPlayers(EntityPlayer.class, predicate);
+		for (EntityPlayer p : list){
+			if(p.getPosition().distanceSq(this.getPosition()) <= 36)
+			{
+				p.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 2));
+			}
+			else if(p.getPosition().distanceSq(this.getPosition()) <= RANGE * RANGE)
+			{
+				p.addPotionEffect(new PotionEffect(MobEffects.SPEED, 2));
+			}
+			//if(Math.abs(p.posX - this.posX) > 0){
+				//new BlockPos().getX()
+			//}else if(this.getDistanceToEntity(p2) <= 10){
+			//	p2.addPotionEffect(new PotionEffect(MobEffects.REGENERATION));
+			//	p2.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS));
+			else{
+				p.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 2));
+			}
+		}
 	}
 	protected void initEntityAI()
     {

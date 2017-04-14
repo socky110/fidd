@@ -1,5 +1,8 @@
 package fidd;
 
+import fidd.capabilities.IMana;
+import fidd.capabilities.Mana;
+import fidd.capabilities.ManaStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -10,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -18,14 +22,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
-@Mod(modid = fidd.MODID, version = fidd.VERSION, name = fidd.NAME)
-public class fidd
+@Mod(modid = Fidd.MODID, version = Fidd.VERSION, name = Fidd.NAME)
+public class Fidd
 {
     public static final String MODID = "fidd";
     public static final String VERSION = "1.0";
     public static final String NAME = "FIDD";
     @SidedProxy(clientSide="fidd.client",serverSide="fidd.server")
-    public static proxy proxy;
+    public static Proxy proxy;
     public static CreativeTabs tab = new CreativeTabs("tab"){
 		@Override
 		public Item getTabIconItem() {
@@ -53,6 +57,9 @@ public class fidd
     public void init(FMLInitializationEvent event)
     {
     	MinecraftForge.EVENT_BUS.register(events);
+    	CapabilityManager.INSTANCE.register(IMana.class, new ManaStorage(), Mana.class);
+
+    	
     	RenderingRegistry.registerEntityRenderingHandler(Sink.class, new RenderLiving(Minecraft.getMinecraft().getRenderManager(), new ModelZombie(), 2.25F){
 
 			@Override
@@ -66,6 +73,6 @@ public class fidd
     	//RenderingRegistry.registerEntityRenderingHandler(midgiman.class, new rendermidgiman(Minecraft.getMinecraft().getRenderManager(), new ModelZombie(), 5));
     	//RenderingRegistry.registerEntityRenderingHandler(entitymidgiball.class, new rendermidgiball(Minecraft.getMinecraft().getRenderManager()));
     	//RenderingRegistry.registerEntityRenderingHandler(entitymidgiball2.class, new rendermidgiball(Minecraft.getMinecraft().getRenderManager()));
-    	System.out.println("DIRT BLOCK >> "+Blocks.DIRT.getUnlocalizedName());
+    	
     }
 }
