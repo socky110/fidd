@@ -1,8 +1,9 @@
 package fidd;
 
-import fidd.capabilities.IMana;
-import fidd.capabilities.Mana;
-import fidd.capabilities.ManaStorage;
+import fidd.capabilities.IGladiatorInfo;
+import fidd.capabilities.GladiatorInfo;
+import fidd.capabilities.GladiatorInfoStorage;
+import fidd.network.ManaMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -20,7 +21,10 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Fidd.MODID, version = Fidd.VERSION, name = Fidd.NAME)
 public class Fidd
@@ -28,7 +32,7 @@ public class Fidd
     public static final String MODID = "fidd";
     public static final String VERSION = "1.0";
     public static final String NAME = "FIDD";
-    @SidedProxy(clientSide="fidd.client",serverSide="fidd.server")
+    @SidedProxy(clientSide="fidd.Client",serverSide="fidd.Server")
     public static Proxy proxy;
     public static CreativeTabs tab = new CreativeTabs("tab"){
 		@Override
@@ -38,6 +42,7 @@ public class Fidd
     };
     public static Item midgiball;
     public static Item emidgiball;
+    public static SimpleNetworkWrapper network;
     @EventHandler
     public void pre(FMLPreInitializationEvent event)
     {
@@ -49,6 +54,8 @@ public class Fidd
     	//emidgiball = new emidgiball().setUnlocalizedName("emidgiball").setRegistryName("emidgiball");
     	//GameRegistry.register(midgiball);
     	//GameRegistry.register(emidgiball);
+    	network = NetworkRegistry.INSTANCE.newSimpleChannel("FiddChannel");
+    	network.registerMessage(ManaMessage.Handler.class, ManaMessage.class, 0, Side.CLIENT);
     	EntityRegistry.registerModEntity(Sink.class, "Sink", 121, MODID, 5, 1, false, 0, 100);
     }
     public static EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -57,7 +64,7 @@ public class Fidd
     public void init(FMLInitializationEvent event)
     {
     	MinecraftForge.EVENT_BUS.register(events);
-    	CapabilityManager.INSTANCE.register(IMana.class, new ManaStorage(), Mana.class);
+    	CapabilityManager.INSTANCE.register(IGladiatorInfo.class, new GladiatorInfoStorage(), GladiatorInfo.class);
 
     	
     	RenderingRegistry.registerEntityRenderingHandler(Sink.class, new RenderLiving(Minecraft.getMinecraft().getRenderManager(), new ModelZombie(), 2.25F){

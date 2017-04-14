@@ -1,6 +1,6 @@
 package fidd;
 
-import fidd.capabilities.ManaProvider;
+import fidd.capabilities.GladiatorInfoProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
@@ -15,21 +15,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class EventsClass {
-	public void entityPlayer(EntityEvent e){
-		if(e.getEntity() instanceof EntityPlayer){
-			if(((EntityPlayer)e.getEntity()).getDistanceToEntity(new EntitySheep(e.getEntity().worldObj)) <= 10){
+	public void onPlayerTick(TickEvent.PlayerTickEvent e){
+		e.player.getCapability(GladiatorInfoProvider.MANA_CAP, null).fill(1);
+		if(e.player instanceof EntityPlayer){
+			if(e.player.getDistanceToEntity(new EntitySheep(e.player.worldObj)) <= 10){
 				//if(((EntityPlayer)e.getEntity()).getHealth() <= 8){
 				//((EntityPlayer)e.getEntity()).heal(10F);
 				//}
-			if(((EntityPlayer) e.getEntity()).getHealth() <= 10F){
-				if (!e.getEntity().worldObj.isRemote)
-                {
-				((EntityPlayer) e.getEntity()).addPotionEffect(new PotionEffect(MobEffects.REGENERATION));
-                }
-					//((EntityPlayer)e.getEntity()).attackEntityFrom(DamageSource.causePlayerDamage(player), -2);
-			}
+				if(e.player.getHealth() <= 10F){
+					if (!e.player.worldObj.isRemote)
+	                {
+						e.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION));
+	                }
+						//((EntityPlayer)e.getEntity()).attackEntityFrom(DamageSource.causePlayerDamage(player), -2);
+				}
 			}	
 		}
 	}
@@ -49,7 +51,7 @@ public class EventsClass {
 	{
 
 		if (!(event.getObject() instanceof EntityPlayer)) return;
-		event.addCapability(MANA_CAP, new ManaProvider());
+		event.addCapability(MANA_CAP, new GladiatorInfoProvider());
 
 	}
 }

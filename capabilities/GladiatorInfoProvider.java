@@ -6,17 +6,17 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ManaProvider implements ICapabilitySerializable<NBTBase>
+public class GladiatorInfoProvider implements ICapabilitySerializable<NBTBase>
 
 {
 
- @CapabilityInject(IMana.class)
+ @CapabilityInject(IGladiatorInfo.class)
 
- public static final Capability<IMana> MANA_CAP = null;
+ public static final Capability<IGladiatorInfo> MANA_CAP = null;
 
 
 
- private IMana instance = MANA_CAP.getDefaultInstance();
+ private IGladiatorInfo instance = MANA_CAP.getDefaultInstance();
 
 
 

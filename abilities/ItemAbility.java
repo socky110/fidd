@@ -1,7 +1,7 @@
 package fidd.abilities;
 
-import fidd.capabilities.IMana;
-import fidd.capabilities.ManaProvider;
+import fidd.capabilities.IGladiatorInfo;
+import fidd.capabilities.GladiatorInfoProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -28,7 +28,7 @@ public abstract class ItemAbility extends Item{
 		EntityPlayer player = (EntityPlayer) entity;
 		if (isSelected){
 			if (tag.getLong("nextUse") < world.getTotalWorldTime()){
-				IMana mana = player.getCapability(ManaProvider.MANA_CAP, null);
+				IGladiatorInfo mana = player.getCapability(GladiatorInfoProvider.MANA_CAP, null);
 				if (mana.consume(mana_cost)){
 					use(stack, world, player);
 					tag.setLong("nextUse", world.getTotalWorldTime() + cooldown);

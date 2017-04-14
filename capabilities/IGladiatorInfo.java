@@ -1,10 +1,18 @@
 package fidd.capabilities;
 
-public interface IMana
+import fidd.characters.Gladiator;
+
+public interface IGladiatorInfo
 
 {
 
 	public boolean consume(float points);
+	public Gladiator getGladiator();
+	public void setCurrentGladiator(int gladiator);
+	
+	public Gladiator[] getGladiators();
+	
+	public int getCurrent();
 	
 	public void fill(float points);
 	
